@@ -7,11 +7,11 @@ export enum ModelsOfPrinters {
 
 export const isMultifunctionalPrinter = function(printer: ModelsOfPrinters): boolean {
   switch (printer) {
-    case Printer.Xerox_AltaLink_C8035:
+    case printer.Xerox_AltaLink_C8035:
       return true;
-    case Printer.Xerox_VersaLink_C605:
+    case printer.Xerox_VersaLink_C605:
       return true;
-    case Printer.Xerox_VersaLink_C400:
+    case printer.Xerox_VersaLink_C400:
       return false;
     default:
       throw new Error('Invalid param - unrecognized printer');

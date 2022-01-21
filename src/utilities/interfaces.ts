@@ -1,7 +1,8 @@
-import { ModelsOfPrinters } from '../utilities/utilities';
-export interface BasicSupply {
+import { modelOfPrinter } from './types';
+
+export interface SupplyInterface {
   supply: string;
-  printer: ModelsOfPrinters;
+  model: modelOfPrinter;
   code: string;
 }
 
@@ -9,7 +10,7 @@ export interface PrinterInterface {
   id: string;
   title: string;
   ip: string;
-  model: ModelsOfPrinters;
+  model: modelOfPrinter;
   multifunctional: boolean;
   area: string;
   location: string;

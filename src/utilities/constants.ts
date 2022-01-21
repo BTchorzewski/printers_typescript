@@ -1,5 +1,5 @@
-import { BasicSupply } from '../interfaces/interfaces';
-const SUPPLIES: BasicSupply[] = [
+import { SupplyInterface } from './interfaces';
+const SUPPLIES: SupplyInterface[] = [
   {
     supply: 'Black toner',
     printer: 'Xerox_VersaLink_C400',

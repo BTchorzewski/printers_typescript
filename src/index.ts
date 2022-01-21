@@ -6,7 +6,7 @@ import { config } from 'dotenv';
 
 import { handlebarHelpers } from './views/handlebar-helpers';
 import homeRouter from './routers/home';
-import { printerRouter } from './routers/printer';
+import { printerRouter } from './routers/printers';
 import path from 'node:path';
 
 const dotenv = config();
