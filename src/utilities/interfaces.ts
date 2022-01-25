@@ -1,17 +1,29 @@
 import { modelOfPrinter } from './types';
 
-export interface SupplyInterface {
-  supply: string;
-  model: modelOfPrinter;
+export interface BasicSupplyInterface {
+  supply:string;
   code: string;
+  model:modelOfPrinter;
+}
+
+export interface SupplyInterface extends BasicSupplyInterface{
+  id: string;
+  supply:string;
+  code: string;
+  isAvailable: string;
+  model:modelOfPrinter;
+  storedAt: Date;
+  installedAt: Date | null;
+  printerId: number | null;
 }
 
 export interface PrinterInterface {
-  id: string;
+  id: number;
   title: string;
   ip: string;
   model: modelOfPrinter;
-  multifunctional: boolean;
+  isMultifunctional: boolean;
   area: string;
   location: string;
+  history? : SupplyInterface[];
 }
