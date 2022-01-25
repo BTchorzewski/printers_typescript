@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-
-export const getPrintersPage = async (req:Request, res:Response) => {};
+import { printers } from '../utilities/mocks';
+export const getPrintersPage = async (req:Request, res:Response) => {
+  res.render('pages/printers/printers-page', { printers });
+};
 
 export const getPrinterPage = async (req:Request, res:Response) => {};
 

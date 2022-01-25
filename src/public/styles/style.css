@@ -1,22 +1,5 @@
-body {
-
-}
-.table {
-    background-color: bisque;
-    border: 2px solid black;
-    margin: 0 auto;
-}
-.table__head {
-    background-color: burlywood;
-    font-weight: 700;
-}
-.table__body {}
-.table__ctn {
-
-}
-.table__data {}
-.table__row {
-}
-.table__row--hidden {
-    display: none;
+.navbar  {
+    margin-bottom: 6rem;
+    padding: 1rem 3rem;
+    font-size: 1.8rem;
 }
