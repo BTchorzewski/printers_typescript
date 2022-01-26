@@ -10,7 +10,7 @@ import {
 } from '../controllers/printer';
 
 const printerRouter = Router();
-
+// @todo add routers to manage printer: add, modify, supply, delete.
 printerRouter.get('/printers', getPrintersPage);
 printerRouter.get('/printers/:printerId', getPrinterPage);
 printerRouter.post('/supply-printer', supplyPrinter);

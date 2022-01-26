@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
-import { printers } from '../utilities/mocks';
+import { printers, printer, supplies } from '../utilities/mocks';
 export const getPrintersPage = async (req:Request, res:Response) => {
   res.render('pages/printers/printers-page', { printers });
 };
 
-export const getPrinterPage = async (req:Request, res:Response) => {};
+export const getPrinterPage = async (req:Request, res:Response) => {
+  const { printerId } =req.body;
+  const suppliesToAdd = supplies.filter(el => el.model === printer.model);
+  console.log(suppliesToAdd)
+  res.render('pages/printers/printer-page', { printer, supplies: suppliesToAdd });
+};
 
 export const supplyPrinter = async (req:Request, res:Response) => {};
 
