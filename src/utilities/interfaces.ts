@@ -27,3 +27,10 @@ export interface PrinterInterface {
   location: string;
   history? : SupplyInterface[];
 }
+
+export interface DbConfig {
+  host: string;
+  user: string;
+  database: string;
+  password: string;
+}
