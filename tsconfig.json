@@ -8,7 +8,8 @@
     "lib": ["DOM", "ES6", "DOM.Iterable"],
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "Node"
   },
   "include": ["src/**/*"]
 }
