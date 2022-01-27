@@ -1,4 +1,5 @@
 import { modelOfPrinter } from './types';
+import {Pool} from "mysql2";
 
 export interface BasicSupplyInterface {
   supply:string;
@@ -18,7 +19,7 @@ export interface SupplyInterface extends BasicSupplyInterface{
 }
 
 export interface PrinterInterface {
-  id: number;
+  id: number | null;
   title: string;
   ip: string;
   model: modelOfPrinter;
@@ -26,6 +27,10 @@ export interface PrinterInterface {
   area: string;
   location: string;
   history? : SupplyInterface[];
+}
+
+export interface PrinterModel extends PrinterInterface{
+  getAll(): Promise<modelOfPrinter[] | null>;
 }
 
 export interface DbConfig {

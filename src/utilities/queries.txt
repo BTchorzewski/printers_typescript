@@ -1,0 +1,12 @@
+// query for supplies
+SELECT
+`supply`,
+COUNT(`supply`) as total,
+    SUM(
+        CASE WHEN `isAvailable` = 1 THEN 1 ELSE 0 END
+    ) AS numberOfAvailable
+FROM
+    `supplies`
+WHERE
+    `model` = "Xerox_AltaLink_C8035"
+    GROUP BY `supply`
