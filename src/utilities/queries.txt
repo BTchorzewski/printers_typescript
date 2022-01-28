@@ -1,6 +1,7 @@
 // query for supplies
 SELECT
 `supply`,
+`code`,
 COUNT(`supply`) as total,
     SUM(
         CASE WHEN `isAvailable` = 1 THEN 1 ELSE 0 END
@@ -9,4 +10,19 @@ FROM
     `supplies`
 WHERE
     `model` = "Xerox_AltaLink_C8035"
-    GROUP BY `supply`
+    GROUP BY `supply`, `code`
+    ORDER By `code`
+
+//
+SELECT
+    `printers`.`id`
+    (`supplies`.`id` AS 'supplyId',
+    `supplies`.`supply`,
+    `supplies`.`installedAt`)
+FROM
+    `printers`
+ JOIN
+    `supplies`
+ON
+    `printers`.`id` = `supplies`.`printerId`
+    WHERE 	`printers`.`id` = 17

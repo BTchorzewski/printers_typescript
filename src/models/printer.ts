@@ -3,28 +3,47 @@ import { modelOfPrinter } from '../utilities/types';
 import { Pool } from 'mysql2';
 import { db } from '../utilities/db';
 
-// class Printer implements PrinterModel {
-//   public history: SupplyInterface[] = [];
-//   private DB = db;
-//   constructor(){}
-//
-// }
+class Printer implements PrinterModel {
+  history: SupplyInterface[] = [];
+  id: number;
+  title: string;
+  ip: string;
+  model: modelOfPrinter;
+  isMultifunctional: boolean;
+  area: string;
+  location: string;
+
+  constructor(obj: PrinterInterface){
+    this.id = obj.id;
+    this.title = obj.title;
+    this.ip = obj.ip;
+    this.model = obj.model;
+    this.isMultifunctional = obj.isMultifunctional;
+    this.area = obj.area;
+    this.location = obj.location;
+  }
+
+  static async getAll() {
+    const [results] = await db.execute('SELECT * FROM `printers` JOIN `supplies` ON `printers`.`id` = `supplies`.`id`');
+    return results;
+  }
+
+  static async getOne(ip: string): Promise<modelOfPrinter[]> {
+    throw new Error('Method not implemented.');
+  }
+}
 
 (async () => {
- const results =  await db.execute('SELECT\n' +
-     '`supply`,\n' +
-     'COUNT(`supply`) as total,\n' +
-     '    SUM(\n' +
-     '        CASE WHEN `isAvailable` = 1 THEN 1 ELSE 0 END\n' +
-     '    ) AS numberOfAvailable,\n' +
-     '    sum(\n' +
-     '        CASE WHEN `isAvailable` = 0 THEN 1 ELSE 0 END\n' +
-     '    ) AS numberOfNotAvailable\n' +
-     '\n' +
-     'FROM\n' +
-     '    `supplies`\n' +
-     'WHERE\n' +
-     '    `model` = "Xerox_AltaLink_C8035"\n' +
-     '    GROUP BY `supply`')
-  console.log(results)
+  const [results] = await db.execute('SELECT\n' +
+      '    `printers`.*,\n' +
+      '    `supplies`.`id` AS \'supplyId\',\n' +
+      '    `supplies`.`supply`,\n' +
+      '    `supplies`.`installedAt`\n' +
+      'FROM\n' +
+      '    `printers`\n' +
+      'LEFT JOIN\n' +
+      '    `supplies`\n' +
+      'ON\n' +
+      '    `printers`.`id` = `supplies`.`printerId`');
+  console.log(results);
 })();

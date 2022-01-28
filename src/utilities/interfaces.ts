@@ -30,7 +30,8 @@ export interface PrinterInterface {
 }
 
 export interface PrinterModel extends PrinterInterface{
-  getAll(): Promise<modelOfPrinter[] | null>;
+
+
 }
 
 export interface DbConfig {
