@@ -1,11 +1,10 @@
-import { PrinterInterface, PrinterModel, SupplyInterface } from '../utilities/interfaces';
+import { PrinterInterface, SupplyInterface } from '../utilities/interfaces';
 import { modelOfPrinter } from '../utilities/types';
-import { printer } from '../utilities/mocks';
-import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2';
+import { ResultSetHeader } from 'mysql2';
 import { db } from '../utilities/db';
 
 class Printer {
-  history: SupplyInterface[] = [];
+  history?: SupplyInterface[] = [];
   id: number | undefined;
   title: string;
   ip: string;
@@ -34,8 +33,18 @@ class Printer {
     return new Printer(this);
   }
 
-  delete() {
-    console.log('Printer deleted');
+  async delete(): Promise<void> {
+    const [results] = await db.execute('INSERT INTO `printers`(`title`, `ip`, `isMultifunctional`, `area`, `location`, `model`) VALUES (?,?,?,?,?,?)',
+        [this.title, this.ip, this.isMultifunctional, this.area, this.location, this.model]);
+    const { affectedRows } = results as ResultSetHeader;
+    if(affectedRows !== 1) throw new Error('Deleting row has failed');
+  }
+
+  async update(): Promise<void> {
+    const [results] = await db.execute('UPDATE `printers` SET `title`=?,`ip`=?,`isMultifunctional`=?,`area`=?,`location`=?,`model`=? WHERE `printers`.`id` = ?',
+        [this.title, this.ip, this.isMultifunctional, this.area, this.location, this.model, this.id]);
+    const { affectedRows } = results as ResultSetHeader;
+    if(affectedRows !== 1) throw new Error('Updating row has failed');
   }
 
   static async findAll(): Promise<PrinterInterface[] | null> {
@@ -56,13 +65,11 @@ class Printer {
         'GROUP BY `printers`.`id` ');
 
     const printers = results as PrinterInterface[];
-    const clearedPrinters = printers.map((el) => {
+    return printers.map((el) => {
       if(el.history[0].code === null) el.history = [];
       return new Printer(el);
     }) as unknown as PrinterInterface[];
-    return clearedPrinters;
   }
-
 
   static async findById(id: number): Promise<PrinterInterface | null> {
     // tslint:disable-next-line:no-shadowed-variable
@@ -89,14 +96,5 @@ class Printer {
 }
 
 (async () => {
-  const r = new Printer({
-    title: 'hello',
-    ip:'10.1.1.1',
-    model:'Xerox_VersaLink_C400',
-    isMultifunctional: true,
-    area:'tom',
-    location: 'gt',
-  });
-  const d = await r.create();
-  console.log(d);
+
 })();

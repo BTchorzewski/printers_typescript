@@ -46,3 +46,9 @@ FROM
 left join `supplies` ON
 `printers`.`id` = `supplies`.`printerId`
 WHERE `printers`.`id` = id
+
+// delete by id
+DELETE FROM `printers` WHERE `printers`.`id`= 30
+
+// update printer
+UPDATE `printers` SET `title`=?,`ip`=?,`isMultifunctional`=?,`area`=?,`location`=?,`model`=? WHERE `printers`.`id` = ?

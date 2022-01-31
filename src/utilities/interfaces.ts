@@ -27,13 +27,11 @@ export interface PrinterInterface {
   area: string;
   location: string;
   history? : SupplyInterface[];
+  create(): Promise<PrinterInterface>;
+  delete(): Promise<void>;
+  update(): Promise<void>;
 }
 
-export interface PrinterModel extends PrinterInterface{
-  save(): PrinterInterface;
-  delete(): void;
-
-}
 
 export interface DbConfig {
   host: string;
