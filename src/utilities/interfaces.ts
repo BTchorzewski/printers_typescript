@@ -1,5 +1,5 @@
 import { modelOfPrinter } from './types';
-import {Pool} from "mysql2";
+import { Pool } from 'mysql2';
 
 export interface BasicSupplyInterface {
   supply:string;
@@ -30,7 +30,8 @@ export interface PrinterInterface {
 }
 
 export interface PrinterModel extends PrinterInterface{
-
+  save(): PrinterInterface;
+  delete(): void;
 
 }
 
