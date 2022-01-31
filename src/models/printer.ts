@@ -1,12 +1,12 @@
 import { PrinterInterface, PrinterModel, SupplyInterface } from '../utilities/interfaces';
 import { modelOfPrinter } from '../utilities/types';
 import { printer } from '../utilities/mocks';
-import { Pool, RowDataPacket } from 'mysql2';
+import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2';
 import { db } from '../utilities/db';
 
 class Printer {
   history: SupplyInterface[] = [];
-  id: number;
+  id: number | undefined;
   title: string;
   ip: string;
   model: modelOfPrinter;
@@ -15,7 +15,7 @@ class Printer {
   location: string;
 
   constructor(obj: PrinterInterface){
-    this.id = null ?? obj.id;
+    this.id = obj.id;
     this.title = obj.title;
     this.ip = obj.ip;
     this.model = obj.model;
@@ -23,9 +23,17 @@ class Printer {
     this.area = obj.area;
     this.location = obj.location;
   }
-  save() {
-    return printer;
+
+  async create(): Promise<PrinterInterface> {
+    if(this.id !== undefined) throw new Error('Can\'t create printer with id. Id param is forbidden');
+    const [results] = await db.execute('INSERT INTO `printers`(`title`, `ip`, `isMultifunctional`, `area`, `location`, `model`) VALUES (?,?,?,?,?,?)',
+        [this.title, this.ip, this.isMultifunctional, this.area, this.location, this.model]);
+    const { insertId } = results as ResultSetHeader;
+    console.log(insertId);
+    this.id = insertId;
+    return new Printer(this);
   }
+
   delete() {
     console.log('Printer deleted');
   }
@@ -51,7 +59,7 @@ class Printer {
     const clearedPrinters = printers.map((el) => {
       if(el.history[0].code === null) el.history = [];
       return new Printer(el);
-    });
+    }) as unknown as PrinterInterface[];
     return clearedPrinters;
   }
 
@@ -75,10 +83,20 @@ class Printer {
         'WHERE `printers`.`id` = ?',[id]) as unknown as Array<PrinterInterface[]>;
     // tslint:disable-next-line:no-shadowed-variable
     if(printer.id=== null) return null;
+    // @ts-ignore
     return new Printer(printer);
   }
 }
 
 (async () => {
-
+  const r = new Printer({
+    title: 'hello',
+    ip:'10.1.1.1',
+    model:'Xerox_VersaLink_C400',
+    isMultifunctional: true,
+    area:'tom',
+    location: 'gt',
+  });
+  const d = await r.create();
+  console.log(d);
 })();

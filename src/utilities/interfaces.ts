@@ -19,7 +19,7 @@ export interface SupplyInterface extends BasicSupplyInterface{
 }
 
 export interface PrinterInterface {
-  id: number | null;
+  id?: number | undefined;
   title: string;
   ip: string;
   model: modelOfPrinter;
