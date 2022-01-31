@@ -4,7 +4,7 @@ import { printer } from '../utilities/mocks';
 import { Pool, RowDataPacket } from 'mysql2';
 import { db } from '../utilities/db';
 
-class Printer implements PrinterModel {
+class Printer {
   history: SupplyInterface[] = [];
   id: number;
   title: string;
@@ -30,7 +30,7 @@ class Printer implements PrinterModel {
     console.log('Printer deleted');
   }
 
-  static async findAll() {
+  static async findAll(): Promise<PrinterInterface[] | null> {
     const [results] = await db.execute('SELECT\n' +
         '`printers`.*,\n' +
         'JSON_ARRAYAGG(JSON_OBJECT(\'id\',`supplies`.`id`,\n' +
@@ -56,8 +56,26 @@ class Printer implements PrinterModel {
   }
 
 
-  static async findById(id: number) {
-
+  static async findById(id: number): Promise<PrinterInterface | null> {
+    // tslint:disable-next-line:no-shadowed-variable
+    const [[printer]] = await db.execute('SELECT\n' +
+        '`printers`.*,\n' +
+        'JSON_ARRAYAGG(JSON_OBJECT(\'id\',`supplies`.`id`,\n' +
+        '\'supply\',`supplies`.`supply`,\n' +
+        '\'code\',`supplies`.`code`,\n' +
+        '\'isAvailable\',`supplies`.`isAvailable`,\n' +
+        '\'model\',`supplies`.`model`,\n' +
+        '\'storedAt\',`supplies`.`storedAt`,\n' +
+        '\'installedAt\',`supplies`.`installedAt`,\n' +
+        '\'printerId\',`supplies`.`printerId`)) AS history\n' +
+        'FROM\n' +
+        '`printers`\n' +
+        'left join `supplies` ON\n' +
+        '`printers`.`id` = `supplies`.`printerId` \n' +
+        'WHERE `printers`.`id` = ?',[id]) as unknown as Array<PrinterInterface[]>;
+    // tslint:disable-next-line:no-shadowed-variable
+    if(printer.id=== null) return null;
+    return new Printer(printer);
   }
 }
 

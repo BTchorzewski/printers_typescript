@@ -13,7 +13,7 @@ WHERE
     GROUP BY `supply`, `code`
     ORDER By `code`
 
-// find by id query
+// find all query
 SELECT
 `printers`.*,
 JSON_ARRAYAGG(JSON_OBJECT('id',`supplies`.`id`,
@@ -29,3 +29,20 @@ FROM
 join `supplies` ON
 `printers`.`id` = `supplies`.`printerId`
 GROUP BY `printers`.`id`
+
+// find by id
+SELECT
+`printers`.*,
+JSON_ARRAYAGG(JSON_OBJECT('id',`supplies`.`id`,
+'supply',`supplies`.`supply`,
+'code',`supplies`.`code`,
+'isAvailable',`supplies`.`isAvailable`,
+'model',`supplies`.`model`,
+'storedAt',`supplies`.`storedAt`,
+'installedAt',`supplies`.`installedAt`,
+'printerId',`supplies`.`printerId`)) AS history
+FROM
+`printers`
+left join `supplies` ON
+`printers`.`id` = `supplies`.`printerId`
+WHERE `printers`.`id` = id
